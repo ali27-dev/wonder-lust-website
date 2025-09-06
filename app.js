@@ -3,6 +3,8 @@ const app = express();
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const path = require("path");
+const Listing = require("./models/listing.js");
+const { title } = require("process");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("views engine", "ejs");
@@ -28,6 +30,20 @@ app.get("/", (req, res) => {
   res.send("root: Hello World!");
 });
 
+app.get("/litingTest", async (req, res) => {
+  let apartment1 = new Listing({
+    title: "Villa",
+    descriuption: "on the mountain",
+    price: 1200,
+    location: "Kalam,swat",
+    country: "Pakistan",
+  });
+
+  await apartment1.save();
+
+  res.send("succcessful testing");
+  console.log("save in DB");
+});
 app.listen(8080, () => {
   console.log("server is listening to port 8080");
 });
