@@ -26,23 +26,18 @@ async function main() {
   await mongoose.connect(MONGO_URL);
 }
 
+////////////////////////////////////////
+//////////// ROOT ROUTE ////////////////
 app.get("/", (req, res) => {
   res.send("root: Hello World!");
 });
 
-app.get("/litingTest", async (req, res) => {
-  let apartment1 = new Listing({
-    title: "Villa",
-    descriuption: "on the mountain",
-    price: 1200,
-    location: "Kalam,swat",
-    country: "Pakistan",
-  });
+////////////////////////////////////////
+//////////// INDEX ROUTE////////////////
+app.get("/listings", async (req, res) => {
+  let listings = await Listing.find({});
 
-  await apartment1.save();
-
-  res.send("succcessful testing");
-  console.log("save in DB");
+  res.render("listings/index.ejs", { listings });
 });
 app.listen(8080, () => {
   console.log("server is listening to port 8080");
