@@ -1,75 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wonder Lust</title>
-  </head>
-  <body>
-    <h2>Add New Listing</h2>
+<% layout("/layouts/boilerplates") %>
+<body>
+  <h2>Add New Listing</h2>
 
-    <form method="post" action="/listings">
-      <label for="title"
-        >Title:
-        <input
-          type="text"
-          placeholder="Add Title"
-          name="listings[title]"
-          id="title"
-        />
-      </label>
-      <br /><br />
-      <label for="desc"
-        >Description:
-        <textarea
-          name="listings[description]"
-          id="desc"
-          placeholder="write decription here"
-        ></textarea>
-      </label>
-      <br /><br />
-      <label for="image"
-        >Image:
-        <input
-          name="listings[image]"
-          id="image"
-          placeholder="Add image URL  here"
-        />
-      </label>
-      <br /><br />
+  <form method="post" action="/listings">
+    <label for="title"
+      >Title:
+      <input
+        type="text"
+        placeholder="Add Title"
+        name="listings[title]"
+        id="title"
+      />
+    </label>
+    <br /><br />
+    <label for="desc"
+      >Description:
+      <textarea
+        name="listings[description]"
+        id="desc"
+        placeholder="write decription here"
+      ></textarea>
+    </label>
+    <br /><br />
+    <label for="image"
+      >Image:
+      <input
+        name="listings[image]"
+        id="image"
+        placeholder="Add image URL  here"
+      />
+    </label>
+    <br /><br />
 
-      <label for="price"
-        >Price:
-        <input
-          type="number"
-          placeholder="Add Price"
-          name="listings[price]"
-          id="price"
-        />
-      </label>
-      <br /><br />
-      <label for="location"
-        >Location:
-        <input
-          type="text"
-          placeholder="Add location"
-          name="listings[location]"
-          id="location"
-        />
-      </label>
-      <br /><br />
-      <label for="country"
-        >Country:
-        <input
-          type="text"
-          placeholder="Add country"
-          name="listings[country]"
-          id="country"
-        />
-      </label>
-      <br /><br />
+    <label for="price"
+      >Price:
+      <input
+        type="number"
+        placeholder="Add Price"
+        name="listings[price]"
+        id="price"
+      />
+    </label>
+    <br /><br />
+    <label for="location"
+      >Location:
+      <input
+        type="text"
+        placeholder="Add location"
+        name="listings[location]"
+        id="location"
+      />
+    </label>
+    <br /><br />
+    <label for="country"
+      >Country:
+      <input
+        type="text"
+        placeholder="Add country"
+        name="listings[country]"
+        id="country"
+      />
+    </label>
+    <br /><br />
 
-      <button>Submit</button>
-    </form>
-  </body>
-</html>
+    <button>Submit</button>
+  </form>
+</body>

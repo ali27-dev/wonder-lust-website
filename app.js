@@ -4,14 +4,14 @@ const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const path = require("path");
 const Listing = require("./models/listing.js");
-const { title } = require("process");
-const { log } = require("util");
+const ejsMate = require("ejs-mate");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("views engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+app.engine("ejs", ejsMate);
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/wonderlust";
 
