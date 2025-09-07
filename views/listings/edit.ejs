@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wonder Lust</title>
+  </head>
+  <body>
+    <h2>Edit Exsiting Listing</h2>
+
+    <form method="post" action="/listings/<%=listing._id%>?_method=PUT">
+      <label for="title"
+        >Title:
+        <input
+          type="text"
+          value="<%= listing.title %>"
+          name="listings[title]"
+          id="title"
+        />
+      </label>
+      <br /><br />
+      <label for="desc"
+        >Description:
+        <textarea name="listings[description]" id="desc">
+<%= listing.title %></textarea
+        >
+      </label>
+      <br /><br />
+      <label for="image"
+        >Image:
+        <input name="listings[image]" id="image" value="<%= listing.image %>" />
+      </label>
+      <br /><br />
+
+      <label for="price"
+        >Price:
+        <input
+          type="number"
+          value="<%= listing.price %>"
+          name="listings[price]"
+          id="price"
+        />
+      </label>
+      <br /><br />
+      <label for="location"
+        >Location:
+        <input
+          type="text"
+          value="<%= listing.location %>"
+          name="listings[location]"
+          id="location"
+        />
+      </label>
+      <br /><br />
+      <label for="country"
+        >Country:
+        <input
+          type="text"
+          value="<%= listing.country %>"
+          name="listings[country]"
+          id="country"
+        />
+      </label>
+      <br /><br />
+
+      <button>Submit</button>
+    </form>
+  </body>
+</html>

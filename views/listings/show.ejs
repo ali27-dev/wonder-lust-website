@@ -17,8 +17,14 @@
       <p>Country: <%= listId.country%></p>
     </div>
 
-    <form method="get" action="/listings/<%= listId._id %>/edit">
-      <button>Edit</button>
+    <a href="/listings/<%= listId._id %>/edit">Edit</a>
+    <br />
+    <br />
+    <form method="post" action="/listings/<%= listId._id %>?_method=DELETE">
+      <button>Delete Listing</button>
     </form>
+
+    <br />
+    <a href="/listings">Back</a>
   </body>
 </html>
