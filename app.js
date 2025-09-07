@@ -5,6 +5,7 @@ const methodOverride = require("method-override");
 const path = require("path");
 const Listing = require("./models/listing.js");
 const { title } = require("process");
+const { log } = require("util");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("views engine", "ejs");
@@ -39,6 +40,12 @@ app.get("/listings", async (req, res) => {
 
   res.render("listings/index.ejs", { listings });
 });
+////////////////////////////////////////
+///////Create: NEW & Create ROUTE///////
+
+app.get("/listings/new", (req, res) => {
+  res.render("listings/new.ejs");
+});
 
 ////////////////////////////////////////
 //////////// SHOW ROUTE////////////////
@@ -49,6 +56,26 @@ app.get("/listings/:id", async (req, res) => {
   // console.log(listId);
 
   res.render("listings/show.ejs", { listId });
+});
+
+///////CREATE ROUTE POST///////////
+app.post("/listings", async (req, res) => {
+  // let { title, description, image, price, location, country } = req.body;
+  let newListings = new Listing(req.body.listings);
+  console.log(newListings);
+
+  await newListings.save();
+
+  res.redirect("/listings");
+});
+
+////////////////////////////////////////
+///////Edit: Edit & Update ROUTE///////
+
+app.get("/listings/:id/edit", async (req, res) => {
+  let { id } = req.params;
+  let editListing = await Listing.findById(id);
+  console.log(editListing);
 });
 
 app.listen(8080, () => {

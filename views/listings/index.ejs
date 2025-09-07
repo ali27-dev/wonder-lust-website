@@ -7,6 +7,11 @@
   </head>
   <body>
     <h2>All Listings</h2>
+
+    <form method="GET" action="/listings/new">
+      <button>Add new project</button>
+    </form>
+
     <ul>
       <% for (let list of listings){ %>
       <li>Title:<a href="/listings/<%= list._id %>"> <%= list.title%></a></li>

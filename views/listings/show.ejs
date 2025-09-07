@@ -16,5 +16,9 @@
       <p>Location: <%= listId.location%></p>
       <p>Country: <%= listId.country%></p>
     </div>
+
+    <form method="get" action="/listings/<%= listId._id %>/edit">
+      <button>Edit</button>
+    </form>
   </body>
 </html>
