@@ -9,7 +9,7 @@
     <h2>All Listings</h2>
     <ul>
       <% for (let list of listings){ %>
-      <li>Title:<a href="/show/<%= list._id %>"> <%= list.title%></a></li>
+      <li>Title:<a href="/listings/<%= list._id %>"> <%= list.title%></a></li>
       <%}%>
     </ul>
   </body>

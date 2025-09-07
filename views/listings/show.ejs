@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Show Wonder Lust</title>
+  </head>
+  <body>
+    <h2>This is <%= listId.title%></h2>
+
+    <div class="list">
+      <p>Title: <%= listId.title%></p>
+      <p>Description: <%= listId.description%></p>
+      <p>Image: <%= listId.image%></p>
+      <p>Price: &#8360;<%= listId.price.toLocaleString("en-PK")%></p>
+      <p>Location: <%= listId.location%></p>
+      <p>Country: <%= listId.country%></p>
+    </div>
+  </body>
+</html>
