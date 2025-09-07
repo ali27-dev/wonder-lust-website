@@ -16,10 +16,10 @@ async function main() {
   await mongoose.connect(MONGO_URL);
 }
 
-const initDB = async function () {
-  await Listing.deleteMany({});
-  await Listing.insertMany(initData.data);
-  console.log("data was added");
-};
+// const initDB = async function () {
+//   await Listing.deleteMany({});
+//   await Listing.insertMany(initData.data);
+//   console.log("data was added");
+// };
 
-initDB();
+// initDB();
