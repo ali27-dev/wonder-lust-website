@@ -1,68 +1,77 @@
 <% layout("/layouts/boilerplates") %>
 <body>
-  <h2>Add New Listing</h2>
+  <div class="row">
+    <div class="col-8 offset-2">
+      <h2>Add New Listing</h2>
+      <form method="post" action="/listings">
+        <div class="md-3">
+          <label for="title" class="form-label">Title:</label>
+          <input
+            type="text"
+            placeholder="Add Title"
+            name="listings[title]"
+            id="title"
+            class="form-control"
+          />
+        </div>
 
-  <form method="post" action="/listings">
-    <label for="title"
-      >Title:
-      <input
-        type="text"
-        placeholder="Add Title"
-        name="listings[title]"
-        id="title"
-      />
-    </label>
-    <br /><br />
-    <label for="desc"
-      >Description:
-      <textarea
-        name="listings[description]"
-        id="desc"
-        placeholder="write decription here"
-      ></textarea>
-    </label>
-    <br /><br />
-    <label for="image"
-      >Image:
-      <input
-        name="listings[image]"
-        id="image"
-        placeholder="Add image URL  here"
-      />
-    </label>
-    <br /><br />
+        <div class="md-3">
+          <label for="desc" class="form-label">Description:</label>
+          <textarea
+            name="listings[description]"
+            id="desc"
+            placeholder="write decription here"
+            class="form-control"
+          ></textarea>
+        </div>
 
-    <label for="price"
-      >Price:
-      <input
-        type="number"
-        placeholder="Add Price"
-        name="listings[price]"
-        id="price"
-      />
-    </label>
-    <br /><br />
-    <label for="location"
-      >Location:
-      <input
-        type="text"
-        placeholder="Add location"
-        name="listings[location]"
-        id="location"
-      />
-    </label>
-    <br /><br />
-    <label for="country"
-      >Country:
-      <input
-        type="text"
-        placeholder="Add country"
-        name="listings[country]"
-        id="country"
-      />
-    </label>
-    <br /><br />
+        <div class="md-3">
+          <label for="image" class="form-label">Image:</label>
+          <input
+            name="listings[image]"
+            id="image"
+            placeholder="Add image URL
+          here"
+            class="form-control"
+          />
+        </div>
 
-    <button>Submit</button>
-  </form>
+        <div class="row">
+          <div class="md-3 col-md-4">
+            <label for="price" class="form-label">Price:</label>
+            <input
+              type="number"
+              placeholder="Add Price"
+              name="listings[price]"
+              id="price"
+              class="form-control"
+            />
+          </div>
+          <div class="md-3 col-md-8">
+            <label for="country" class="form-label">Country:</label>
+            <input
+              type="text"
+              placeholder="Add country"
+              name="listings[country]"
+              id="country"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="md-3">
+          <label for="location" class="form-label">Location:</label>
+          <input
+            type="text"
+            placeholder="Add location"
+            name="listings[location]"
+            id="location"
+            class="form-control"
+          />
+        </div>
+        <br />
+        <button class="btn btn-dark add-btn">Add</button>
+      </form>
+    </div>
+  </div>
 </body>
