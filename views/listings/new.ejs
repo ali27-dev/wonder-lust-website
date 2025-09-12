@@ -20,6 +20,9 @@
             class="form-control"
             required
           />
+          <!-- Validation-Success And Failure-Text -->
+          <div class="invalid-feedback">Please choose a valid title</div>
+          <div class="valid-feedback">Title is looks Good!</div>
         </div>
 
         <div class="md-3">
@@ -31,6 +34,7 @@
             class="form-control"
             required
           ></textarea>
+          <div class="invalid-feedback">Please add a short description</div>
         </div>
 
         <div class="md-3">
@@ -54,6 +58,7 @@
               class="form-control"
               required
             />
+            <div class="invalid-feedback">Please enter a valid price</div>
           </div>
           <div class="md-3 col-md-8">
             <label for="country" class="form-label">Country:</label>
@@ -65,6 +70,9 @@
               class="form-control"
               required
             />
+            <div class="invalid-feedback">
+              Please enter a valid country name
+            </div>
           </div>
         </div>
 
@@ -78,6 +86,7 @@
             class="form-control"
             required
           />
+          <div class="invalid-feedback">Please enter a valid location name</div>
         </div>
 
         <button class="btn btn-dark add-btn mt-3">Add</button>

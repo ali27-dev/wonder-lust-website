@@ -4,7 +4,12 @@
     <div class="col-8 offset-2">
       <h2>Edit Listing</h2>
 
-      <form method="post" action="/listings/<%=listing._id%>?_method=PUT">
+      <form
+        method="post"
+        action="/listings/<%=listing._id%>?_method=PUT"
+        novalidate
+        class="needs-validation"
+      >
         <div class="md-3">
           <label for="title" class="form-label">Title:</label>
           <input
@@ -13,14 +18,26 @@
             name="listings[title]"
             id="title"
             class="form-control"
+            required
           />
+          <!-- Validation-Success And Failure-Text -->
+          <div class="invalid-feedback">Please choose a Valid Title</div>
+          <div class="valid-feedback">Title is looks Good!</div>
         </div>
 
         <div class="md-3">
           <label for="desc" class="form-label">Description:</label>
-          <textarea name="listings[description]" id="desc" class="form-control">
- <%= listing.description %></textarea
+          <textarea
+            name="listings[description]"
+            id="desc"
+            class="form-control"
+            required
           >
+<%= listing.description %></textarea
+          >
+
+          <!-- Validation-Success And Failure-Text -->
+          <div class="invalid-feedback">Please add a short description</div>
         </div>
 
         <div class="md-3">
@@ -30,7 +47,9 @@
             id="image"
             value="<%= listing.image %>"
             class="form-control"
+            required
           />
+          <div class="invalid-feedback">Please add a valid image link</div>
         </div>
 
         <div class="row">
@@ -42,8 +61,12 @@
               name="listings[price]"
               id="price"
               class="form-control"
+              required
             />
+            <!-- Validation-Success And Failure-Text -->
+            <div class="invalid-feedback">Please enter a valid price</div>
           </div>
+
           <div class="md-3 col-md-8">
             <label for="country" class="form-label">Country:</label>
             <input
@@ -52,7 +75,12 @@
               name="listings[country]"
               id="country"
               class="form-control"
+              required
             />
+            <!-- Validation-Success And Failure-Text -->
+            <div class="invalid-feedback">
+              Please enter a valid country name
+            </div>
           </div>
         </div>
 
@@ -64,7 +92,10 @@
             name="listings[location]"
             id="location"
             class="form-control"
+            required
           />
+          <!-- Validation-Success And Failure-Text -->
+          <div class="invalid-feedback">Please enter a location name</div>
         </div>
 
         <button class="btn btn-dark edit-btn mt-3">Edit</button>
