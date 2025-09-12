@@ -5,6 +5,7 @@ const methodOverride = require("method-override");
 const path = require("path");
 const Listing = require("./models/listing.js");
 const ejsMate = require("ejs-mate");
+const wrapAsync = require("./utils/wrapAsync.js");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("views engine", "ejs");
@@ -59,15 +60,18 @@ app.get("/listings/:id", async (req, res) => {
 });
 
 ///////CREATE ROUTE POST///////////
-app.post("/listings", async (req, res) => {
-  // let { title, description, image, price, location, country } = req.body;
-  let newListings = new Listing(req.body.listings);
-  console.log(newListings);
+app.post(
+  "/listings",
+  wrapAsync(async (req, res) => {
+    // let { title, description, image, price, location, country } = req.body;
+    let newListings = new Listing(req.body.listings);
+    console.log(newListings);
 
-  await newListings.save();
+    await newListings.save();
 
-  res.redirect("/listings");
-});
+    res.redirect("/listings");
+  })
+);
 
 ////////////////////////////////////////
 ///////Edit: Edit & Update ROUTE///////
@@ -96,6 +100,12 @@ app.delete("/listings/:id", async (req, res) => {
   let listing = await Listing.findByIdAndDelete(id);
 
   res.redirect("/listings");
+});
+
+////////////////////////////////////////
+//////Handling-Error-Middle-wrae///////
+app.use((err, req, res, next) => {
+  res.send("something went wrong!");
 });
 
 app.listen(8080, () => {
