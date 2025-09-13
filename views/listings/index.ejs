@@ -18,7 +18,10 @@
         <div class="card-img-overlay"></div>
         <div class="card-body">
           <p class="card-text"><%= list.title%></p>
-          <p class="card-text">&#8360;<%= list.price%> / night</p>
+          <p class="card-text">
+            &#8360;<%= list.price ? list.price.toLocaleString("en-PK") : "N/A"
+            %> / night
+          </p>
         </div>
       </div>
     </a>

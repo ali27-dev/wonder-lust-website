@@ -30,7 +30,6 @@ async function main() {
   await mongoose.connect(MONGO_URL);
 }
 
-// const listingValidation =
 ////////////////////////////////////////
 //////////// ROOT ROUTE ////////////////
 app.get("/", (req, res) => {
@@ -38,14 +37,23 @@ app.get("/", (req, res) => {
 });
 
 ////////////////////////////////////////
+/////// Validation-For-Schema //////////
+const validateListing = (req, res, next) => {
+  let { error } = listingSchema.validate(req.body);
+
+  if (error) {
+    let errMsg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(400, errMsg);
+  } else {
+    next();
+  }
+};
+
+////////////////////////////////////////
 //////////// INDEX ROUTE////////////////
 app.get(
   "/listings",
   wrapAsync(async (req, res) => {
-    // if (!req.body.listing) {
-    //   throw new ExpressError(400, "Send a valid data for lasting");
-    // }
-
     let listing = await Listing.find({});
 
     res.render("listings/index.ejs", { listing });
@@ -72,13 +80,8 @@ app.get(
 ///////CREATE ROUTE POST///////////
 app.post(
   "/listings",
+  validateListing,
   wrapAsync(async (req, res, next) => {
-    let result = listingSchema.validate(req.body);
-    console.log(result);
-    if (result.error) {
-      throw new ExpressError(400, result.error);
-    }
-
     // let { title, description, image, price, location, country } = req.body;
     let newListings = new Listing(req.body.listing);
     // console.log(newListings);
@@ -105,10 +108,8 @@ app.get(
 
 app.put(
   "/listings/:id",
+  validateListing,
   wrapAsync(async (req, res) => {
-    // if (!req.body.listing) {
-    //   throw new ExpressError(400, "Send a valid data for lasting");
-    // }
     let { id } = req.params;
     let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
     // console.log(listing);

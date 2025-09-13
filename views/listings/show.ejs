@@ -12,10 +12,10 @@
         alt="Listing image"
       />
       <div class="card-body">
-        <p class="card-text">
+        < class="card-text">
           <b><%= listId.title %></b> <br />
           <%= listId.description%> <br />
-          &#8360;<%= listId.price%> <br />
+  &#8360;<%= list.price ? list.price.toLocaleString("en-PK") : "N/A" %> / night <br />
           <%= listId.country%> <br />
           <%= listId.location%> <br />
         </p>
