@@ -6,6 +6,7 @@ const path = require("path");
 const Listing = require("./models/listing.js");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
+const ExpressError = require("./utils/ExpressError.js");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("views engine", "ejs");
@@ -36,11 +37,17 @@ app.get("/", (req, res) => {
 
 ////////////////////////////////////////
 //////////// INDEX ROUTE////////////////
-app.get("/listings", async (req, res) => {
-  let listings = await Listing.find({});
+app.get(
+  "/listings",
+  wrapAsync(async (req, res) => {
+    if (!req.body.listing) {
+      throw new ExpressError(400, "Send a valid data for lasting");
+    }
+    let listings = await Listing.find({});
 
-  res.render("listings/index.ejs", { listings });
-});
+    res.render("listings/index.ejs", { listings });
+  })
+);
 ////////////////////////////////////////
 ///////Create: NEW & Create ROUTE///////
 
@@ -50,19 +57,25 @@ app.get("/listings/new", (req, res) => {
 
 ////////////////////////////////////////
 //////////// SHOW ROUTE////////////////
-app.get("/listings/:id", async (req, res) => {
-  let { id } = req.params;
-  // console.log(id);
-  let listId = await Listing.findById(id);
-  // console.log(listId);
+app.get(
+  "/listings/:id",
+  wrapAsync(async (req, res) => {
+    let { id } = req.params;
+    // console.log(id);
+    let listId = await Listing.findById(id);
+    // console.log(listId);
 
-  res.render("listings/show.ejs", { listId });
-});
+    res.render("listings/show.ejs", { listId });
+  })
+);
 
 ///////CREATE ROUTE POST///////////
 app.post(
   "/listings",
   wrapAsync(async (req, res) => {
+    if (!req.body.listing) {
+      throw new ExpressError(400, "Send a valid data for lasting");
+    }
     // let { title, description, image, price, location, country } = req.body;
     let newListings = new Listing(req.body.listings);
     console.log(newListings);
@@ -76,37 +89,65 @@ app.post(
 ////////////////////////////////////////
 ///////Edit: Edit & Update ROUTE///////
 
-app.get("/listings/:id/edit", async (req, res) => {
-  let { id } = req.params;
-  let listing = await Listing.findById(id);
-  console.log(listing);
+app.get(
+  "/listings/:id/edit",
+  wrapAsync(async (req, res) => {
+    let { id } = req.params;
+    let listing = await Listing.findById(id);
+    console.log(listing);
 
-  res.render("listings/edit.ejs", { listing });
-});
+    res.render("listings/edit.ejs", { listing });
+  })
+);
 
-app.put("/listings/:id", async (req, res) => {
-  let { id } = req.params;
-  let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listings });
-  console.log(listing);
+app.put(
+  "/listings/:id",
+  wrapAsync(async (req, res) => {
+    if (!req.body.listing) {
+      throw new ExpressError(400, "Send a valid data for lasting");
+    }
+    let { id } = req.params;
+    let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listings });
+    console.log(listing);
 
-  await listing.save();
-  res.redirect(`/listings/${id}`);
-});
+    await listing.save();
+    res.redirect(`/listings/${id}`);
+  })
+);
 
 ////////////////////////////////////////
 ////////////DELETE ROUTE////////////////
-app.delete("/listings/:id", async (req, res) => {
-  let { id } = req.params;
-  let listing = await Listing.findByIdAndDelete(id);
+app.delete(
+  "/listings/:id",
+  wrapAsync(async (req, res) => {
+    let { id } = req.params;
+    let listing = await Listing.findByIdAndDelete(id);
 
-  res.redirect("/listings");
-});
+    res.redirect("/listings");
+  })
+);
 
 ////////////////////////////////////////
 //////Handling-Error-Middle-wrae///////
-app.use((err, req, res, next) => {
-  res.send("something went wrong!");
+// app.all("*", (req, res, next) => {
+//   next(new ExpressError(404, "Page Not Found!"));
+// });
+
+//(The problem is that in Express 5, app.all("/.*", ...) is not valid because Express treats the string literally, not as a regex. That’s why it crashes)
+//
+
+app.all(/.*/, (req, res) => {
+  next(new ExpressError(404, "Page Not Found!"));
 });
+
+app.use((err, req, res, next) => {
+  let { statusCode = 500, message = "Something went wrong" } = err;
+  res.status(statusCode).send(message);
+});
+
+// app.use((err, req, res, next) => {
+//   res.send("something went wrong!");
+// });
 
 app.listen(8080, () => {
   console.log("server is listening to port 8080");
