@@ -142,12 +142,9 @@ app.all(/.*/, (req, res) => {
 
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something went wrong" } = err;
-  res.status(statusCode).send(message);
+  // res.status(statusCode).send(message);
+  res.render("error.ejs", { message });
 });
-
-// app.use((err, req, res, next) => {
-//   res.send("something went wrong!");
-// });
 
 app.listen(8080, () => {
   console.log("server is listening to port 8080");
