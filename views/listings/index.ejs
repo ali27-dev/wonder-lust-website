@@ -6,7 +6,7 @@
     <button>Add new project</button>
   </form> -->
   <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
-    <% for (let list of listings){ %>
+    <% for (let list of listing){ %>
     <a href="/listings/<%= list._id%>" class="card-img-link">
       <div class="card">
         <img
@@ -18,9 +18,7 @@
         <div class="card-img-overlay"></div>
         <div class="card-body">
           <p class="card-text"><%= list.title%></p>
-          <p class="card-text">
-            &#8360;<%= list.price.toLocaleString("en-PK")%> / night
-          </p>
+          <p class="card-text">&#8360;<%= list.price%> / night</p>
         </div>
       </div>
     </a>

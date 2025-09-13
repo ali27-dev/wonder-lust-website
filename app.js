@@ -7,6 +7,7 @@ const Listing = require("./models/listing.js");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
+const { listingSchema } = require("./schema.js");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("views engine", "ejs");
@@ -29,6 +30,7 @@ async function main() {
   await mongoose.connect(MONGO_URL);
 }
 
+// const listingValidation =
 ////////////////////////////////////////
 //////////// ROOT ROUTE ////////////////
 app.get("/", (req, res) => {
@@ -40,12 +42,13 @@ app.get("/", (req, res) => {
 app.get(
   "/listings",
   wrapAsync(async (req, res) => {
-    if (!req.body.listing) {
-      throw new ExpressError(400, "Send a valid data for lasting");
-    }
-    let listings = await Listing.find({});
+    // if (!req.body.listing) {
+    //   throw new ExpressError(400, "Send a valid data for lasting");
+    // }
 
-    res.render("listings/index.ejs", { listings });
+    let listing = await Listing.find({});
+
+    res.render("listings/index.ejs", { listing });
   })
 );
 ////////////////////////////////////////
@@ -61,10 +64,7 @@ app.get(
   "/listings/:id",
   wrapAsync(async (req, res) => {
     let { id } = req.params;
-    // console.log(id);
     let listId = await Listing.findById(id);
-    // console.log(listId);
-
     res.render("listings/show.ejs", { listId });
   })
 );
@@ -72,13 +72,16 @@ app.get(
 ///////CREATE ROUTE POST///////////
 app.post(
   "/listings",
-  wrapAsync(async (req, res) => {
-    if (!req.body.listing) {
-      throw new ExpressError(400, "Send a valid data for lasting");
+  wrapAsync(async (req, res, next) => {
+    let result = listingSchema.validate(req.body);
+    console.log(result);
+    if (result.error) {
+      throw new ExpressError(400, result.error);
     }
+
     // let { title, description, image, price, location, country } = req.body;
-    let newListings = new Listing(req.body.listings);
-    console.log(newListings);
+    let newListings = new Listing(req.body.listing);
+    // console.log(newListings);
 
     await newListings.save();
 
@@ -94,7 +97,7 @@ app.get(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findById(id);
-    console.log(listing);
+    // console.log(listing);
 
     res.render("listings/edit.ejs", { listing });
   })
@@ -103,12 +106,12 @@ app.get(
 app.put(
   "/listings/:id",
   wrapAsync(async (req, res) => {
-    if (!req.body.listing) {
-      throw new ExpressError(400, "Send a valid data for lasting");
-    }
+    // if (!req.body.listing) {
+    //   throw new ExpressError(400, "Send a valid data for lasting");
+    // }
     let { id } = req.params;
-    let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listings });
-    console.log(listing);
+    let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+    // console.log(listing);
 
     await listing.save();
     res.redirect(`/listings/${id}`);
@@ -136,14 +139,14 @@ app.delete(
 //(The problem is that in Express 5, app.all("/.*", ...) is not valid because Express treats the string literally, not as a regex. That’s why it crashes)
 //
 
-app.all(/.*/, (req, res) => {
+app.all(/.*/, (req, res, next) => {
   next(new ExpressError(404, "Page Not Found!"));
 });
 
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something went wrong" } = err;
   // res.status(statusCode).send(message);
-  res.render("error.ejs", { message });
+  res.status(statusCode).render("error.ejs", { message });
 });
 
 app.listen(8080, () => {
