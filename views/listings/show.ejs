@@ -2,7 +2,7 @@
 <body>
   <div class="row mt-3">
     <div class="col-8 offset-3">
-      <h2>Listing Details</h2>
+      <h2><b><%= listId.title %></b> </h2>
     </div>
 
     <div class="card col-6 offset-3 show-card">
@@ -12,10 +12,10 @@
         alt="Listing image"
       />
       <div class="card-body">
-        < class="card-text">
-          <b><%= listId.title %></b> <br />
+        <div class="card-text">
+          
           <%= listId.description%> <br />
-  &#8360;<%= list.price ? list.price.toLocaleString("en-PK") : "N/A" %> / night <br />
+  &#8360;<%= listId.price ? listId.price.toLocaleString("en-PK") : "N/A" %> / night <br />
           <%= listId.country%> <br />
           <%= listId.location%> <br />
         </p>
@@ -24,7 +24,7 @@
     <div class="btns">
       <a
         href="/listings/<%= listId._id %>/edit"
-        class="btn btn-dark col-1 offset-3 edit-btn"
+        class="btn btn-dark edit-btn"
         >Edit</a
       >
 
