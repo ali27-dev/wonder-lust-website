@@ -3,14 +3,13 @@ const app = express();
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const path = require("path");
-const Listing = require("./models/listing.js");
 const ejsMate = require("ejs-mate");
-const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const { listingSchema, reviewSchema } = require("./schema.js");
-const Review = require("./models/review.js");
-// Router-listing
+
+// Route-listing
 const listings = require("./routes/listing.js");
+// Route-reviews
+const reviews = require("./routes/review.js");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("views engine", "ejs");
@@ -39,56 +38,10 @@ app.get("/", (req, res) => {
   res.send("root: Hello World!");
 });
 
-////////////////////////////////////////
-/////// Validation-For-Schema //////////
-
-const validateReview = (req, res, next) => {
-  let { error } = reviewSchema.validate(req.body);
-
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
-};
-
-///////Listing-route///
+///////Listing-route
 app.use("/listings", listings);
-
-////////////////////////////////////////
-/////////Reviews--POST-ROUTE///////////
-app.post(
-  "/listings/:id/reviews",
-  validateReview,
-  wrapAsync(async (req, res) => {
-    let listing = await Listing.findById(req.params.id);
-    let newReview = new Review(req.body.review);
-
-    listing.reviews.push(newReview);
-
-    await newReview.save();
-    await listing.save();
-
-    console.log("review was added");
-    res.redirect(`/listings/${listing._id}`);
-  })
-);
-////////////////////////////////////////
-/////////Reviews--DELETE--ROUTE////////
-app.delete(
-  "/listings/:id/reviews/:reviewId",
-  wrapAsync(async (req, res) => {
-    let { id, reviewId } = req.params;
-
-    await Listing.findByIdAndUpdate(id, {
-      $pull: { reviews: reviewId },
-    });
-    await Review.findByIdAndDelete(reviewId);
-
-    res.redirect(`/listings/${id}`);
-  })
-);
+///////Review-route
+app.use("/listings/:id/reviews", reviews);
 
 ////////////////////////////////////////
 //////Handling-Error-Middle-wrae///////

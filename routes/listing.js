@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
-const { listingSchema, reviewSchema } = require("../schema.js");
+const { listingSchema } = require("../schema.js");
 const Listing = require("../models/listing.js");
 
 ////////////////////////////////////////
@@ -12,7 +12,7 @@ const validateListing = (req, res, next) => {
 
   if (error) {
     let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
+    throw new ExpressError(400, error);
   } else {
     next();
   }
@@ -52,10 +52,7 @@ router.post(
   wrapAsync(async (req, res, next) => {
     // let { title, description, image, price, location, country } = req.body;
     let newListings = new Listing(req.body.listing);
-    // console.log(newListings);
-
     await newListings.save();
-
     res.redirect("/listings");
   })
 );
@@ -68,8 +65,6 @@ router.get(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findById(id);
-    // console.log(listing);
-
     res.render("listings/edit.ejs", { listing });
   })
 );
