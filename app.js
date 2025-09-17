@@ -7,7 +7,7 @@ const Listing = require("./models/listing.js");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const { listingSchema } = require("./schema.js");
+const { listingSchema, reviewSchema } = require("./schema.js");
 const Review = require("./models/review.js");
 
 app.set("views", path.join(__dirname, "views"));
@@ -41,6 +41,16 @@ app.get("/", (req, res) => {
 /////// Validation-For-Schema //////////
 const validateListing = (req, res, next) => {
   let { error } = listingSchema.validate(req.body);
+
+  if (error) {
+    let errMsg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(400, errMsg);
+  } else {
+    next();
+  }
+};
+const validateReview = (req, res, next) => {
+  let { error } = reviewSchema.validate(req.body);
 
   if (error) {
     let errMsg = error.details.map((el) => el.message).join(",");
@@ -133,18 +143,23 @@ app.delete(
 );
 ////////////////////////////////////////
 ////////////Reviews--Post-ROUTE////////////////
-app.post("/listings/:id/reviews", async (req, res) => {
-  let listing = await Listing.findById(req.params.id);
-  let newReview = new Review(req.body.review);
+app.post(
+  "/listings/:id/reviews",
+  validateReview,
+  wrapAsync(async (req, res) => {
+    let listing = await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.review);
 
-  listing.reviews.push(newReview);
+    listing.reviews.push(newReview);
 
-  await newReview.save();
-  await listing.save();
+    await newReview.save();
+    await listing.save();
 
-  console.log("review was added");
-  res.send("review was added");
-});
+    console.log("review was added");
+    res.redirect("review was added");
+  })
+);
+
 ////////////////////////////////////////
 //////Handling-Error-Middle-wrae///////
 // app.all("*", (req, res, next) => {
