@@ -23,7 +23,6 @@ router.get(
   "/",
   wrapAsync(async (req, res) => {
     let listing = await Listing.find({});
-
     res.render("listings/index.ejs", { listing });
   })
 );
@@ -41,6 +40,10 @@ router.get(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let listId = await Listing.findById(id).populate("reviews");
+    if (!listId) {
+      req.flash("error", "Listing does not exits!");
+      return res.redirect("/listings");
+    }
     res.render("listings/show.ejs", { listId });
   })
 );
@@ -66,6 +69,10 @@ router.get(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findById(id);
+    if (!listing) {
+      req.flash("error", "Listing does not exits!");
+      return res.redirect("/listings");
+    }
     res.render("listings/edit.ejs", { listing });
   })
 );
