@@ -53,6 +53,7 @@ router.post(
     // let { title, description, image, price, location, country } = req.body;
     let newListings = new Listing(req.body.listing);
     await newListings.save();
+    req.flash("success", "New Listing created!");
     res.redirect("/listings");
   })
 );
