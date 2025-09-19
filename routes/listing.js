@@ -79,6 +79,7 @@ router.put(
     // console.log(listing);
 
     await listing.save();
+    req.flash("success", "Listing Updated!");
     res.redirect(`/listings/${id}`);
   })
 );
@@ -90,7 +91,7 @@ router.delete(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findByIdAndDelete(id);
-
+    req.flash("success", "Listing Deleted!");
     res.redirect("/listings");
   })
 );
