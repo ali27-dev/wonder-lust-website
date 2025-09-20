@@ -9,10 +9,12 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
-// Route-listing
-const listings = require("./routes/listing.js");
-// Route-reviews
-const reviews = require("./routes/review.js");
+
+// Routes
+const listingRoute = require("./routes/listing.js");
+const reviewsRoute = require("./routes/review.js");
+const userRoute = require("./routes/user.js");
+
 const flash = require("connect-flash");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/wonderlust";
@@ -64,7 +66,6 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-  console.log(res.locals.error);
   next();
 });
 
@@ -77,10 +78,12 @@ app.get("/demouser", async (req, res) => {
   let newuser = await User.register(fakeUser, "helloworld");
   res.send(newuser);
 });
-///////Listing-route
-app.use("/listings", listings);
-///////Review-route
-app.use("/listings/:id/reviews", reviews);
+//Listing-route
+app.use("/listings", listingRoute);
+//Review-route
+app.use("/listings/:id/reviews", reviewsRoute);
+//user-route
+app.use("/", userRoute);
 
 ////////////////////////////////////////
 //////Handling-Error-Middle-wrae///////
