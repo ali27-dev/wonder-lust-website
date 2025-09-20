@@ -6,6 +6,9 @@ const path = require("path");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
 // Route-listing
 const listings = require("./routes/listing.js");
 // Route-reviews
@@ -51,6 +54,13 @@ app.get("/", (req, res) => {
 
 app.use(session(sessionOptions));
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
@@ -58,6 +68,15 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/demouser", async (req, res) => {
+  let fakeUser = new User({
+    email: "Abid@gmail.com",
+    username: "Abid ali",
+  });
+
+  let newuser = await User.register(fakeUser, "helloworld");
+  res.send(newuser);
+});
 ///////Listing-route
 app.use("/listings", listings);
 ///////Review-route
