@@ -12,15 +12,14 @@
         class="card-img-top show-image"
         alt="Listing image"
       />
-      <div class="card-body">
-        <div class="card-text">
-          
-          <%= listId.description%> <br />
-  &#8360;<%= listId.price ? listId.price.toLocaleString("en-PK") : "N/A" %> / night <br />
-          <%= listId.country%> <br />
-          <%= listId.location%> <br />
-        </p>
-      </div>
+      <div class="card-body mb-3">
+        <p class="card-text">Owned By <%= listId.owner.username%></p>
+        <p class="card-text"><%= listId.description%></p>
+        <p class="card-text">&#8360;<%= listId.price ? listId.price.toLocaleString("en-PK") : "N/A" %> / night </p>
+        <p class="card-text"> <%= listId.country%> </p>
+        <p class="card-text"> <%= listId.location%> </p>
+
+       
     </div>
     <!-- Edit-btn = to go to eidt section and eidt the listing -->
     <div class="btns">

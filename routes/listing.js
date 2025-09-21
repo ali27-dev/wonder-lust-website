@@ -5,6 +5,7 @@ const ExpressError = require("../utils/ExpressError.js");
 const { listingSchema } = require("../schema.js");
 const Listing = require("../models/listing.js");
 const { isLoggedIn } = require("../middleware.js");
+
 ////////////////////////////////////////
 /////// Validation-For-Schema //////////
 const validateListing = (req, res, next) => {
@@ -39,7 +40,10 @@ router.get(
   "/:id",
   wrapAsync(async (req, res) => {
     let { id } = req.params;
-    let listId = await Listing.findById(id).populate("reviews");
+    let listId = await Listing.findById(id)
+      .populate("reviews")
+      .populate("owner");
+    console.log(listId);
     if (!listId) {
       req.flash("error", "Listing does not exits!");
       return res.redirect("/listings");
@@ -56,6 +60,7 @@ router.post(
   wrapAsync(async (req, res, next) => {
     // let { title, description, image, price, location, country } = req.body;
     let newListings = new Listing(req.body.listing);
+    newListings.owner = req.user._id;
     await newListings.save();
     req.flash("success", "New Listing created!");
     res.redirect("/listings");

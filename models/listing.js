@@ -37,6 +37,10 @@ const listingSchema = new Schema({
       ref: "Review",
     },
   ],
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 //// Mongoose-Middle-ware = when delete one listing the reviews will also delete.////
