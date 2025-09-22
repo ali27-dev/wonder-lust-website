@@ -21,7 +21,9 @@
 
        
     </div>
-    <!-- Edit-btn = to go to eidt section and eidt the listing -->
+    <!-- Edit-btn-->
+     <!-- Implementing-Authorization -->
+     <% if(currUser &&currUser._id.equals(listId.owner._id)){ %>
     <div class="btns">
       <a
         href="/listings/<%= listId._id %>/edit"
@@ -32,7 +34,8 @@
       <form method="post" action="/listings/<%= listId._id %>?_method=DELETE">
         <button class="btn btn-dark offset-5">Delete</button>
       </form>
-    <!-- back-btn = to go back to allListings -->
+     <% } %>
+    <!-- back-btn -->
       <a href="/listings" class="btn btn-dark offset-1">Go Back</a>
     </div>
   </div>
