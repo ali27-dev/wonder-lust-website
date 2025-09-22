@@ -3,10 +3,46 @@ const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const Listing = require("../models/listing.js");
 const { isLoggedIn, isOwned, validateListing } = require("../middleware.js");
-const { authorize } = require("passport");
 
 const listingController = require("../controllers/listing.js");
 
+router
+  .route("/")
+  .get(wrapAsync(listingController.index))
+  .post(
+    isLoggedIn,
+    validateListing,
+    wrapAsync(listingController.createNewListing)
+  );
+
+router.get("/new", isLoggedIn, listingController.createNewForm);
+
+router
+  .route("/:id")
+  .get(wrapAsync(listingController.showRoute))
+  .put(
+    // Login-required
+    isLoggedIn,
+    // Implementing-Authorization
+    isOwned,
+    validateListing,
+    wrapAsync(listingController.updateListing)
+  )
+  .delete(isLoggedIn, isOwned, wrapAsync(listingController.destroyListing));
+
+///////Edit: Edit & Update ROUTE///////
+router.get(
+  "/:id/edit",
+  isLoggedIn,
+  isOwned,
+  wrapAsync(listingController.createEditForm)
+);
+
+module.exports = router;
+
+// i'm srore this data for understanding the code when i'm implement the router.route then the code i'm don't understand it.//
+
+/*
 //////////// INDEX ROUTE////////////////
 router.get("/", wrapAsync(listingController.index));
 
@@ -23,9 +59,7 @@ router.post(
   validateListing,
   wrapAsync(listingController.createNewListing)
 );
-
 ///////Edit: Edit & Update ROUTE///////
-
 router.get(
   "/:id/edit",
   isLoggedIn,
@@ -42,7 +76,6 @@ router.put(
   validateListing,
   wrapAsync(listingController.updateListing)
 );
-
 ////////////DELETE ROUTE////////////////
 router.delete(
   "/:id",
@@ -51,4 +84,4 @@ router.delete(
   wrapAsync(listingController.destroyListing)
 );
 
-module.exports = router;
+*/
