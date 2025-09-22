@@ -3,6 +3,7 @@ const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const Listing = require("../models/listing.js");
 const { isLoggedIn, isOwned, validateListing } = require("../middleware.js");
+const { authorize } = require("passport");
 
 ////////////////////////////////////////
 //////////// INDEX ROUTE////////////////
@@ -27,7 +28,12 @@ router.get(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let listId = await Listing.findById(id)
-      .populate("reviews")
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "author",
+        },
+      })
       .populate("owner");
     console.log(listId);
     if (!listId) {

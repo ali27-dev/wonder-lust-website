@@ -23,7 +23,7 @@
     </div>
     <!-- Edit-btn-->
      <!-- Implementing-Authorization -->
-    
+    <% if(currUser && listId.owner._id.equals(currUser._id)){ %>
     <div class="btns">
       <a
         href="/listings/<%= listId._id %>/edit"
@@ -34,15 +34,18 @@
       <form method="post" action="/listings/<%= listId._id %>?_method=DELETE">
         <button class="btn btn-dark offset-5">Delete</button>
       </form>
-
+<% } %>
     <!-- back-btn -->
       <a href="/listings" class="btn btn-dark offset-1">Go Back</a>
     </div>
+
   </div>
 
   <!-- Review-section -->
   <div class="col-8 offset-3 mb-3">
     <hr>
+    <!-- Implementing-Authorization -->
+    <% if(currUser){ %>
     <h4>Leave a Review</h4>
 
     <form action="/listings/<%= listId.id %>/reviews" method="post" novalidate class="needs-validation">
@@ -61,19 +64,21 @@
 
       <button class="btn btn-outline-dark">Submit</button>
     </form>
-
-    <hr>
+<% } %>
     <p><b>All Reviews</b></p>
     <div class="row">
     <% for(let review of listId.reviews) {%>
    <div class="card col-5 mb-3 ms-3">
   <div class="card-body">
-    <h5 class="card-title">Jone Dev</h5>
+    <h5 class="card-title"><%= review.author.username %></h5>
     <p class="card-text"><%= review.comment %></p>
     <p class="card-text"><%= review.rating %> Stars</p>
   </div>
   <form action="/listings/<%= listId._id %>/reviews/<%= review._id %>?_method=DELETE" method="post" class="mb-3">
+    <!-- Implementing-Authorization -->
+     <% if(currUser && review.author._id.equals(currUser._id)){ %>
     <button class="btn btn-sm btn-dark">Delete</button>
+    <% } %>
   </form>
   </div>
       <% } %>
