@@ -40,7 +40,7 @@ router.get(
   "/:id/edit",
   isLoggedIn,
   isOwned,
-  wrapAsync(listingController.createEditForm)
+  wrapAsync(listingController.renderEditForm)
 );
 
 module.exports = router;

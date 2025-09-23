@@ -40,7 +40,16 @@
           <!-- Validation-Success And Failure-Text -->
           <div class="invalid-feedback">Please add a short description</div>
         </div>
-
+        <div>
+          <label for="image" class="form-label" style="display: block"
+            >Original Image:</label
+          >
+          <img
+            src="<%= listing.image.url %>"
+            alt=""
+            style="width: 250px; height: 250px; border-radius: 8px"
+          />
+        </div>
         <div class="mb-3">
           <label for="image" class="form-label">Uploade New Image:</label>
           <input
