@@ -29,6 +29,7 @@ router
     isLoggedIn,
     // Implementing-Authorization
     isOwned,
+    upload.single("listing[image]"),
     validateListing,
     wrapAsync(listingController.updateListing)
   )
