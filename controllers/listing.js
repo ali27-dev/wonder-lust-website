@@ -32,9 +32,14 @@ module.exports.showRoute = async (req, res) => {
 
 ///////CREATE ROUTE POST///////////
 module.exports.createNewListing = async (req, res, next) => {
+  let url = req.file.path;
+  let filename = req.file.filename;
+
   // let { title, description, image, price, location, country } = req.body;
   let newListings = new Listing(req.body.listing);
   newListings.owner = req.user._id;
+  newListings.image = { url, filename };
+  console.log(newListings.image);
   await newListings.save();
   req.flash("success", "New Listing created!");
   res.redirect("/listings");
