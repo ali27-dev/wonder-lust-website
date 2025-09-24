@@ -1,4 +1,7 @@
 const Listing = require("../models/listing.js");
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapToken = process.env.MAP_TOKEN;
+const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
 //////////// INDEX ROUTE////////////////
 module.exports.index = async (req, res) => {
@@ -32,6 +35,15 @@ module.exports.showRoute = async (req, res) => {
 
 ///////CREATE ROUTE POST///////////
 module.exports.createNewListing = async (req, res, next) => {
+  let response = await geocodingClient
+    .forwardGeocode({
+      query: req.body.listing.location,
+      limit: 1,
+    })
+    .send();
+  console.log(response.body.features);
+  res.send("done!");
+
   let url = req.file.path;
   let filename = req.file.filename;
 
