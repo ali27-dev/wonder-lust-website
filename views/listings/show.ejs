@@ -1,4 +1,7 @@
 <% layout("/layouts/boilerplates") %>
+<script>
+  let mapToken = "<%= process.env.MAP_TOKEN%>";
+</script>
 <!-- view-listing-section -->
 <div class="row mt-3">
   <div class="col-8 offset-3">
@@ -166,3 +169,5 @@
   <div id="map"></div>
 </div>
 <!-- Getting-Ending-with-map -->
+
+<script src="/js/map.js"></script>
