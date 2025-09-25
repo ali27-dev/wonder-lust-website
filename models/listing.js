@@ -34,6 +34,17 @@ const listingSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  geometry: {
+    type: {
+      type: String, // Don't do `{ location: { type: String } }`
+      // required: true,
+      enum: ["Point"], // 'location.type' must be 'Point'
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
 });
 
 //// Mongoose-Middle-ware = when delete one listing the reviews will also delete.////
