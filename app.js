@@ -54,9 +54,9 @@ const sessionOptions = {
 };
 ////////////////////////////////////////
 //////////// ROOT ROUTE ////////////////
-app.get("/", (req, res) => {
-  res.send("root: Hello World!");
-});
+// app.get("/", (req, res) => {
+//   res.send("root: Hello World!");
+// });
 
 app.use(session(sessionOptions));
 app.use(flash());
