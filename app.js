@@ -34,7 +34,7 @@ main()
   });
 
 async function main() {
-  await mongoose.connect(urlDB);
+  await mongoose.connect(DB_URL);
 }
 
 app.set("views", path.join(__dirname, "views"));
