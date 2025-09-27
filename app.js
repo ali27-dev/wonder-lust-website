@@ -10,6 +10,7 @@ const path = require("path");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
@@ -43,8 +44,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 
+const store = MongoStore.create({
+  dbUrl: urlDB,
+  crypto: {
+    secret: process.env.SECRET,
+  },
+  touchAfter: 24 * 3600,
+});
+store.on("error", () => {
+  console.log("ERROR is MONGO SESSION STORE", err);
+});
+
 const sessionOptions = {
-  secret: "mysupersecretcode",
+  store,
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -53,11 +66,6 @@ const sessionOptions = {
     httpOnly: true,
   },
 };
-////////////////////////////////////////
-//////////// ROOT ROUTE ////////////////
-// app.get("/", (req, res) => {
-//   res.send("root: Hello World!");
-// });
 
 app.use(session(sessionOptions));
 app.use(flash());

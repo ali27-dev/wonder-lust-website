@@ -3,7 +3,8 @@ const Review = require("./models/review.js");
 const ExpressError = require("./utils/ExpressError.js");
 const { listingSchema, reviewSchema } = require("./schema.js");
 
-// Login-required
+//////////////////////
+/// Login-required ///
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     req.session.redirectUrl = req.originalUrl;
@@ -12,7 +13,8 @@ module.exports.isLoggedIn = (req, res, next) => {
   }
   next();
 };
-// Implementing-login and redirct to that page
+////////////////////////////////////////////////
+// Implementing-login and redirct to that page//
 module.exports.saveRedirectUrl = (req, res, next) => {
   if (req.session.redirectUrl) {
     res.locals.redirectUrl = req.session.redirectUrl;
@@ -20,7 +22,8 @@ module.exports.saveRedirectUrl = (req, res, next) => {
   next();
 };
 
-// Implementing-Authorization
+/////////////////////////////////
+/// Implementing-Authorization///
 module.exports.isOwned = async (req, res, next) => {
   let { id } = req.params;
   let listing = await Listing.findById(id);
@@ -57,7 +60,8 @@ module.exports.validateReview = (req, res, next) => {
   }
 };
 
-// Implementing-Authorization-For-Reviews
+//////////////////////////////////////////////
+/// Implementing-Authorization-For-Reviews ///
 module.exports.isReviewAuthor = async (req, res, next) => {
   let { id, reviewId } = req.params;
   let review = await Review.findById(reviewId);
