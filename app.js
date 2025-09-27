@@ -23,7 +23,7 @@ const userRoute = require("./routes/user.js");
 const flash = require("connect-flash");
 
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wonderlust";
-const urlDB = process.env.ATLASDB_URL;
+const DB_URL = process.env.ATLASDB_URL;
 
 main()
   .then(() => {
@@ -45,7 +45,7 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 
 const store = MongoStore.create({
-  dbUrl: urlDB,
+  mongoUrl: DB_URL,
   crypto: {
     secret: process.env.SECRET,
   },
